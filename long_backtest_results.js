@@ -1,8 +1,14 @@
+//1. pass initial_active_order and remaining market_data into long_backtester(market_data, order_set)
+//2. within backtester, check each new market data price and time for add or exit events
+//3. if add or exit event occurs, create {trades} object and add to trade_record
+//4. run order_request() -> add_backtester_orders -> exit_backtester_orders again
+//5. return entire trade_record 
+
 var trade_logic_qualification = require("./trade_logic_qualification")
 var set_add_or_exit_trade_object = require("./set_add_or_exit_trade_object")
 var create_order_request = require("./create_order_request")
-var long_add_backtest_trade_engine = require("./long_add_backtest_trade_engine")
-var long_exit_backtest_trade_engine = require("./long_exit_backtest_trade_engine")
+var long_add_trade_engine = require("./long_add_trade_engine")
+var long_exit_trade_engine = require("./long_exit_trade_engine")
 
 async function long_backtest_results(data, initial_orders_set, initial_trade_object){
     //console.log('')
@@ -16,7 +22,6 @@ async function long_backtest_results(data, initial_orders_set, initial_trade_obj
     let add_backtester_orders = []
     let exit_backtester_orders = []
     let matched_order_result = {}
-    let event = ''
 
     filled_trades.push(initial_trade_object)
     active_orders_set = initial_orders_set
@@ -25,23 +30,22 @@ async function long_backtest_results(data, initial_orders_set, initial_trade_obj
         const current_price = data[i].price
         const current_time = data[i].time
         const time_exp = data[i].time - data[i-1].time
-        matched_order_result = trade_logic_qualification(current_price, time_exp, active_orders_set)
-        //console.log('i %s for data[i]: ', i, data[i])
 
-        // 'LONG_ADD' or 'LONG_EXIT' trade event occured
+        // this is where the actual trade orders get checked vs price/time data to see if a trade 'could' be made
+        matched_order_result = trade_logic_qualification(current_price, time_exp, active_orders_set)
+
+        // if 'LONG_ADD' or 'LONG_EXIT' trade event occured
         if (matched_order_result != 'No Matched Order'){
             //console.log('filled_trades: ', filled_trades)
             trade_obj = set_add_or_exit_trade_object(filled_trades, current_time, matched_order_result)
+            filled_trades.push(trade_obj)
             //console.log('')
             //console.log('Trade Occured: ', trade_obj)
             //console.log('')
             //console.log('matched_order_result: ', matched_order_result)
-
-            filled_trades.push(trade_obj)
-            
             order_request = await create_order_request(trade_obj)
-            add_backtester_orders = await long_add_backtest_trade_engine(order_request)
-            exit_backtester_orders = await long_exit_backtest_trade_engine(order_request)
+            add_backtester_orders = await long_add_trade_engine(order_request)
+            exit_backtester_orders = await long_exit_trade_engine(order_request)
             active_orders_set = []
             active_orders_set = active_orders_set.concat(add_backtester_orders, exit_backtester_orders)
         }

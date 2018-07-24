@@ -1,4 +1,4 @@
-
+//uses trade_info (from filled trade) to format an order request to send to add/exit_trade_engines
 function createOrderRequest(trade_info){
     const order_info = {}
 

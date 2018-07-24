@@ -1,15 +1,16 @@
-function set_add_or_exit_trade_object (trade_record, current_time, active_order) { //trade_number, type, price, size, qty, basis, pnl_chg, sum_pnl, profit_protect_price) {
+//trade_qualifications met
+//create trade record object for filled trades
+
+function set_add_or_exit_trade_object (trade_record, current_time, active_order) {
     let last_trade = trade_record[trade_record.length - 1]
-    //console.log('last_trade: ', last_trade)
-    //console.log('active_order: ', active_order)
-    let trades = {}
     const type = active_order.type
+
+    let trades = {}
 
     if (type == 'LONG_ADD'){
         trades.type = active_order.type
         trades.trade_number = last_trade.trade_number + 1
         trades.trade_price = active_order.add_price 
-        //used to line up sum_pnl for comparison of model vs buy and hold etc
         trades.trade_time = current_time
         trades.add_qty = active_order.add_qty
         trades.size = last_trade.size + trades.add_qty
@@ -20,8 +21,8 @@ function set_add_or_exit_trade_object (trade_record, current_time, active_order)
         trades.basis = set_basis_price(trades.size, trades.trade_price, trades.sum_pnl)
         trades.profit_protect_pnl_level = set_profit_protect_pnl_level(trades.sum_pnl, trades.size, trades.trade_price, trades.profit_protect_price)            
         
-        trades.market_speed = 4 //get_market_speed()
-        trades.volatility = 'med' //get_market_volatility()
+        trades.market_speed = 4 //TEMP: get_market_speed()
+        trades.volatility = 'med' //TEMP: get_market_volatility()
 
     } else if (type == 'LONG_EXIT'){
         trades.type = active_order.type
@@ -36,8 +37,8 @@ function set_add_or_exit_trade_object (trade_record, current_time, active_order)
         trades.basis = set_basis_price(trades.size, trades.trade_price, trades.sum_pnl)
         trades.profit_protect_pnl_level = set_profit_protect_pnl_level(trades.sum_pnl, trades.size, trades.trade_price, trades.profit_protect_price)            
 
-        trades.market_speed = 4 //get_market_speed()
-        trades.volatility = 'med' //get_market_volatility()
+        trades.market_speed = 4 //TEMP: get_market_speed() from client
+        trades.volatility = 'med' //TEMP: get_market_volatility() from client
     }
     return trades
 }
