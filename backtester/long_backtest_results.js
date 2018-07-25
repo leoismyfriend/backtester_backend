@@ -7,8 +7,8 @@
 var trade_logic_qualification = require("./trade_logic_qualification")
 var set_add_or_exit_trade_object = require("./set_add_or_exit_trade_object")
 var create_order_request = require("./create_order_request")
-var long_add_trade_engine = require("./long_add_trade_engine")
-var long_exit_trade_engine = require("./long_exit_trade_engine")
+var long_add_trade_engine = require("./../trade_engine/long_add_trade_engine")
+var long_exit_trade_engine = require("./../trade_engine/long_exit_trade_engine")
 
 async function long_backtest_results(data, initial_orders_set, initial_trade_object){
     //console.log('')
