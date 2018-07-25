@@ -1,8 +1,8 @@
 // Accept user_input/client data for initialization into backtester
 // Takes the price and time data and user input (INPUT) -> creates initial_order_request -> places it into the trade_engine -> processes add(s)/exit(s) trade orders
 // return final filled trades if they meet strategy requirements
-var long_add_trade_engine = require("./long_add_trade_engine")
-var long_exit_trade_engine = require("./long_exit_trade_engine")
+var long_add_trade_engine = require("./../trade_engine/long_add_trade_engine")
+var long_exit_trade_engine = require("./../trade_engine/long_exit_trade_engine")
 
 var set_initial_trade_object = require("./set_initial_trade_object")
 var create_order_request = require("./create_order_request")
