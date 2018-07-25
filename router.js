@@ -1,7 +1,7 @@
 'use strict'
 var express = require("express")
 var router = express.Router()
-const trade_model_results = require("./trade_model_results")
+const trade_model_results = require("./backtester/trade_model_results")
 
 // initialize backtester
 router.post("/backtest", (req, res, next) => {
