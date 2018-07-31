@@ -7,8 +7,8 @@ async function set_initial_trade_object(user_input){
 
     //2. initialize variables here for set_trade_object () or first trade
     const trade_info = {}
-    trade_info.trade_number = 1
     trade_info.type = 'INITIAL_TRADE'
+    trade_info.trade_number = 1
     trade_info.trade_price = start_price 
     trade_info.time = 0
     trade_info.size = user_input.size
