@@ -6,7 +6,7 @@
 //4. how much to you have to exit? 
 //5. what is the add price offset you want this trade to trigger? 
 
-var Strategy = require("./strategy_model").Strategy
+var Strategy = require("./../model/strategy_model").Strategy
 var strategy = new Strategy()
 var adjust_protect_price_offset = require("./adjust_protect_price_offset")
 

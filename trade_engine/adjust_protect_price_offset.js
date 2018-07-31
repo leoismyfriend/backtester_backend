@@ -1,6 +1,6 @@
 'use_strict'
 
-var Strategy = require("./strategy_model").Strategy
+var Strategy = require("./../model/strategy_model").Strategy
 var strategy = new Strategy()
 
 const strategy_profit_protect_offset = strategy.profit_protect_tick_offset
